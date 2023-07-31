@@ -20,7 +20,7 @@
 *************************************************************/
 void changeTree(BinaryTreeNode < int > * root) {
     if (root == NULL) return;
-
+    
     int childSum = 0;
     if (root->left) childSum += root->left->data;
     if (root->right) childSum += root->right->data;
@@ -32,8 +32,8 @@ void changeTree(BinaryTreeNode < int > * root) {
     changeTree(root->left);
     changeTree(root->right);
 
-    int tot = 0;
-    if (root->left) tot += root->left->data;
-    if (root->right) tot += root->right->data;
-    if (root->left || root->right) root->data = tot;
+    int totSum = 0;
+    if (root->left) totSum += root->left->data;
+    if (root->right) totSum += root->right->data;
+    if (root->left || root->right) root->data = totSum;
 }  

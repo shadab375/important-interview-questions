@@ -1,66 +1,76 @@
+//CLEAN CODE
 /**
  * Definition for binary tree
  * struct TreeNode {
  *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
+ *     TreeTreeNode *left;
+ *     TreeTreeNode *right;
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
 
-// Helper function to find the path from the root to a given target value 'x'
-// in the binary tree. Returns true if the target value is found, and the path
-// to the target is stored in the 'arr' vector.
-bool getPath(TreeNode* root, vector<int>& arr, int x) {
-    // If the current node is NULL, the target value 'x' is not present in the
-    // current subtree, so we return false.
-    if (root == NULL)
-        return false;
+bool hasPath(TreeNode *root, vector<int>& arr, int x) {
+    if (!root) return false;
 
-    // Add the current node's value to the 'arr' vector, as it is part of the
-    // current path being explored.
     arr.push_back(root->val);
-
-    // If the current node's value is equal to the target value 'x', it means we
-    // have found the target, and the path is complete. So, we return true.
-    if (root->val == x)
-        return true;
-
-    // Otherwise, we recursively search for the target value 'x' in the left
-    // and right subtrees of the current node.
-    // If the target is found in either subtree, we return true to indicate that.
-    if (getPath(root->left, arr, x))
-        return true;
-    if (getPath(root->right, arr, x))
-        return true;
-
-    // If the target value 'x' is not found in the current subtree, we backtrack
-    // by removing the current node's value from the 'arr' vector, as it doesn't
-    // belong to the path from the root to the target.
+    if (root->val == x) return true;
+    if (hasPath(root->left, arr, x) || hasPath(root->right, arr, x)) return true;
     arr.pop_back();
-
-    // If the target value 'x' is not found in the current subtree or its children,
-    // we return false to indicate that.
+    
     return false;
 }
 
-// Main function to find the path from the root to the node with value 'x'
-// in the binary tree. Returns a vector containing the path from the root to the
-// target node.
 vector<int> Solution::solve(TreeNode* root, int x) {
-    // Create an empty vector to store the path to the target node 'x'.
-    vector<int> arr;
+    vector<int> ans;
+    hasPath(root, ans, x);
+    return ans;
+}
 
-    // If the root of the binary tree is NULL, the tree is empty, so we return
-    // the empty 'arr' vector.
-    if (root == NULL)
-        return arr;
+//CODE WITH COMMENTS
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeTreeNode *left;
+ *     TreeTreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
 
-    // Call the helper function to find the path to the target value 'x' in the
-    // binary tree. The path will be stored in the 'arr' vector.
-    getPath(root, arr, x);
+// Returns true if there is a path from root
+// to the given node. It also populates
+// 'arr' with the given path
+bool hasPath(TreeNode *root, vector<int>& arr, int x)
+{
+    // if root is NULL
+    // there is no path
+    if (!root)
+        return false;
 
-    // Return the 'arr' vector, which contains the path from the root to the node
-    // with value 'x'.
-    return arr;
+    // push the node's value in 'arr'
+    arr.push_back(root->val);
+
+    // if it is the required node
+    // return true
+    if (root->val == x)
+        return true;
+
+    // else check whether the required node lies
+    // in the left subtree or right subtree of
+    // the current node
+    if (hasPath(root->left, arr, x) ||
+        hasPath(root->right, arr, x))
+        return true;
+
+    // required node does not lie either in the
+    // left or right subtree of the current node
+    // Thus, remove current node's value from
+    // 'arr'and then return false
+    arr.pop_back();
+    return false;
+}
+vector<int> Solution::solve(TreeNode* A, int B) {
+    vector<int>ans;
+    hasPath(A,ans,B);
+    return ans;
 }

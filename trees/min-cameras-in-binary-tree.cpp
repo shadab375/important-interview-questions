@@ -23,8 +23,8 @@ public:
             cameras++;
             return 0;
         }
-        else if (lchild == 0 || rchild == 0) return 1;
-        else return -1;
+        if (lchild == 0 || rchild == 0) return 1;
+        return -1;
     }
 
     int minCameraCover(TreeNode* root) {
