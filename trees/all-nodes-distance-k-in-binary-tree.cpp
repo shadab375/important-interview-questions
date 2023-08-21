@@ -10,43 +10,47 @@
 class Solution {
 public:
 
-    void markParents(TreeNode* root, unordered_map<TreeNode*, TreeNode*>& parent, TreeNode* target) {
+    void markParents(TreeNode* root, unordered_map<TreeNode*, TreeNode*>& parent) {
+        if (root == NULL) return;
+
         queue<TreeNode*> q;
         q.push(root);
 
         while (!q.empty()) {
             TreeNode* node = q.front();
             q.pop();
+
             if (node->left) {
-                parent[node->left] = node;
                 q.push(node->left);
+                parent[node->left] = node;
             }
             if (node->right) {
-                parent[node->right] = node;
                 q.push(node->right);
+                parent[node->right] = node;
             }
         }
     }
 
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        vector<int> result;
+        vector<int> ans;
+        if (root == NULL) return ans;
         unordered_map<TreeNode*, TreeNode*> parent;
-        markParents(root, parent, target);
+        markParents(root, parent);
         unordered_map<TreeNode*, bool> vis;
-        queue<TreeNode*> q;
 
+        queue<TreeNode*> q;
         q.push(target);
         vis[target] = true;
-        int cur_level = 0;
 
+        int cur_level = 0;
         while (!q.empty()) {
             int size = q.size();
             if (cur_level == k) break;
-            cur_level++;
 
             for (int i=0; i<size; i++) {
                 TreeNode* node = q.front();
                 q.pop();
+
                 if (node->left && !vis[node->left]) {
                     q.push(node->left);
                     vis[node->left] = true;
@@ -60,13 +64,15 @@ public:
                     vis[parent[node]] = true;
                 }
             }
+            cur_level++;
         }
-        
+
         while (!q.empty()) {
             TreeNode* node = q.front();
             q.pop();
-            result.push_back(node->val);
+            ans.push_back(node->val);
         }
-        return result;
+
+        return ans;
     }
 };
