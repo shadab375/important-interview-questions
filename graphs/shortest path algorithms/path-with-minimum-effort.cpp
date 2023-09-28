@@ -9,15 +9,15 @@ public:
     int minimumEffortPath(vector<vector<int>>& heights) {
         int n = heights.size();
         int m = heights[0].size();
-
-        vector<vector<int>> result(n, vector<int>(m, 1e9));
-
+        vector<vector<int>> result(n, vector<int>(m, 1e9)); 
+        //result matrix stores minimum effort from [0][0] to every cell
+        
         priority_queue<P, vector<P>, greater<P>> pq;
         result[0][0] = 0;
         pq.push({0, {0, 0}});
 
         while (!pq.empty()) {
-            int diff = pq.top().first;
+            int curEffort = pq.top().first;
             int x = pq.top().second.first;
             int y = pq.top().second.second;
             pq.pop();
@@ -31,10 +31,10 @@ public:
                 };
 
                 if (isSafe(new_x, new_y)) {
-                    int newEffort = max(abs(heights[x][y] - heights[new_x][new_y]), diff);
-                    if (newEffort < result[new_x][new_y]) {
-                        result[new_x][new_y] = newEffort;
-                        pq.push({newEffort, {new_x, new_y}});
+                    int maxNewEffort = max(abs(heights[x][y] - heights[new_x][new_y]), curEffort);
+                    if (maxNewEffort < result[new_x][new_y]) {
+                        result[new_x][new_y] = maxNewEffort;
+                        pq.push({maxNewEffort, {new_x, new_y}});
                     }
                 }
             }

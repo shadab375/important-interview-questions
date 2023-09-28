@@ -1,93 +1,68 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <bits/stdc++.h> 
 
-struct Node
-{
-    Node *childs[26];
+struct Node {
+    Node* childs[26];
+    int cntStartWith = 0;
     int cntEndWith = 0;
-    int cntPrefix = 0;
 };
-class Trie
-{
+
+class Trie{
 private:
-    Node *root;
+    Node* root;
 
 public:
-    /** Initialize your data structure here. */
-    Trie()
-    {
+
+    Trie(){
         root = new Node();
     }
 
-    /** Inserts a word into the trie. */
-    void insert(string word)
-    {
-        Node *curr = root;
-        for (int i = 0; i < word.length(); i++)
-        {
+    void insert(string &word){
+        Node* cur = root;
+
+        for (int i=0; i<word.size(); i++) {
             char ch = word[i];
-            if (curr->childs[ch - 'a'] == NULL)
-            {
-                curr->childs[ch - 'a'] = new Node();
-            }
-            curr = curr->childs[ch - 'a'];
-            curr->cntPrefix++;
+            if (cur->childs[ch-'a'] == NULL) cur->childs[ch-'a'] = new Node();
+            cur = cur->childs[ch-'a'];
+            cur->cntStartWith++;
         }
-        curr->cntEndWith++;
+        
+        cur->cntEndWith++;
     }
 
-    int countWordsEqualTo(string &word)
-    {
-        Node *curr = root;
-        for (int i = 0; i < word.length(); i++)
-        {
+    int countWordsEqualTo(string &word){
+        Node* cur = root;
+
+        for (int i=0; i<word.size(); i++) {
             char ch = word[i];
-            if (curr->childs[ch - 'a'] != NULL)
-            {
-                curr = curr->childs[ch - 'a'];
-            }
-            else
-            {
-                return 0;
-            }
+            if (cur->childs[ch-'a'] == NULL) return 0;
+            cur = cur->childs[ch-'a'];
         }
-        return curr->cntEndWith;
+
+        return cur->cntEndWith;
     }
 
-    int countWordsStartingWith(string &word)
-    {
-        Node *curr = root;
-        for (int i = 0; i < word.length(); i++)
-        {
+    int countWordsStartingWith(string &word){
+        Node* cur = root;
+
+        for (int i=0; i<word.size(); i++) {
             char ch = word[i];
-            if (curr->childs[ch - 'a'] != NULL)
-            {
-                curr = curr->childs[ch - 'a'];
-            }
-            else
-            {
-                return 0;
-            }
+            if (cur->childs[ch-'a'] == NULL) return 0;
+            cur = cur->childs[ch-'a'];
         }
-        return curr->cntPrefix;
+
+        return cur->cntStartWith;
     }
 
-    void erase(string &word)
-    {
-        Node *curr = root;
-        for (int i = 0; i < word.length(); i++)
-        {
+    void erase(string &word){
+        Node* cur = root;
+
+        for (int i=0; i<word.size(); i++) {
             char ch = word[i];
-            if (curr->childs[ch - 'a'] != NULL)
-            {
-                curr = curr->childs[ch - 'a'];
-                curr->cntPrefix--;
-            }
-            else
-            {
-                return;
-            }
+            if (cur->childs[ch-'a'] == NULL) return;
+            cur = cur->childs[ch-'a'];
+            cur->cntStartWith--;
         }
-        curr->cntEndWith--;
+
+        cur->cntEndWith--;
     }
 };

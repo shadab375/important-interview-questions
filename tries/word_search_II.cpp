@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
- 
+
 struct Node{
     bool isEnd = false;
     Node* childs[26];

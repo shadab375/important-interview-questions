@@ -1,45 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 class Solution {
 public:
-    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int destination, int k) {
-        vector<int> distance(n, INT_MAX);
-        
-        unordered_map<int, vector<pair<int, int>>> adj;
-        
-        for(vector<int> &vec : flights) {
-            int u = vec[0];
-            int v = vec[1];
-            int wt = vec[2];
-            
-            adj[u].push_back({v, wt});
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dest, int k) {
+        vector<vector<int>> adj[n];
+        vector<int> dist(n, 1e9);
+
+        for (auto &it: flights) {
+            adj[it[0]].push_back({it[1], it[2]});
         }
         
         queue<pair<int, int>> q;
+        dist[src] = 0;
         q.push({0, src});
-        distance[src] = 0;
-        
-        int level = 0;
-        
-        while(!q.empty() && level <= k) {
-            int N = q.size();
+
+        int stops = 0;
+
+        while (!q.empty() && stops<=k) {
+            int size = q.size();
             
-            while(N--) {
+            for (int i=0; i<size; i++) {
                 int nodeDist = q.front().first;
                 int node = q.front().second;
                 q.pop();
-                
-                for(auto &it : adj[node]) {
-                    int adjNode = it.first;
-                    int edgeWeight = it.second;
-                    
-                    if(distance[adjNode] > nodeDist + edgeWeight) {
-                        distance[adjNode] = nodeDist + edgeWeight;
-                        q.push({distance[adjNode], adjNode});
+
+                for (auto &it: adj[node]) {
+                    int adjNode = it[0];
+                    int edgeWeight = it[1];
+
+                    if (nodeDist + edgeWeight < dist[adjNode]) {
+                        dist[adjNode] = nodeDist + edgeWeight;
+                        q.push({dist[adjNode], adjNode});
                     }
                 }
             }
-            level++;
+            stops++;
         }
-        
-        return distance[destination] == INT_MAX ? -1 : distance[destination];
+
+        if (dist[dest] == 1e9) return -1;
+        return dist[dest];
     }
 };

@@ -14,31 +14,32 @@ class Solution {
     int mod = 100000;
     
     int minimumMultiplications(vector<int>& arr, int start, int end) {
+        int n = 100000;
+        vector<int> dist(n, 1e9);
+        
         queue<pair<int, int>> q;
-        vector<int> dist(100000, 1e9);
-        
         dist[start] = 0;
-        q.push({start, 0});  
-        
+        q.push({0, start});
         if (start == end) return 0;
         
         while (!q.empty()) {
-            int node = q.front().first;
-            int steps = q.front().second;
+            int nodeDist = q.front().first;
+            int node = q.front().second;
             q.pop();
             
-            for (auto it: arr) {
-                int num = (it*node)%mod;
-                if (steps + 1 < dist[num]) {
-                    dist[num] = steps+1;
-                    if (num == end) return steps+1;
-                    q.push({num, steps+1});
+            for (auto &it: arr) {
+                int adjNode = (it*node)%mod;
+                int edgeWeight = 1;
+                
+                if (nodeDist + edgeWeight < dist[adjNode]) {
+                    dist[adjNode] = nodeDist + edgeWeight;
+                    if (adjNode == end) return dist[adjNode];
+                    q.push({dist[adjNode], adjNode});
                 }
             }
         }
         
         return -1;
-        
     }
 };
 

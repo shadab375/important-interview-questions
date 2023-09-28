@@ -3,7 +3,7 @@ using namespace std;
 
 class Solution {
 public:
-     bool searchNext(vector<vector<char>> &board, string word, int i, int j, 
+    bool searchNext(vector<vector<char>> &board, string word, int i, int j, 
     int index, int n, int m) {
 
         // if index reaches at the end that means we have found the word

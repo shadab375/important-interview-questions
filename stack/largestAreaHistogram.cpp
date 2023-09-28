@@ -1,26 +1,57 @@
 class Solution {
 public:
-    int largestRectangleArea(vector<int>& heights) {
+    int largestRectangleArea(vector<int>& histo) {
+        int n = histo.size();
         stack<int> st;
-        st.push(-1);
-        int maxArea = 0;
+        int maxA = 0;
 
-        for (int i=0; i<=heights.size(); i++) {
-            int val = 0;
-            if (i == heights.size()) val = 0;
-            else val = heights[i];
-
-            while (st.top() >= 0 && val <= heights[st.top()]) {
-                int nsr = i;
-                int h = heights[st.top()];
+        for (int i=0; i<=n; i++) {
+            while (!st.empty() && (i == n || histo[i] <= histo[st.top()])) {
+                int height = histo[st.top()];
                 st.pop();
-                int nsl = st.top();
-                int w = nsr - nsl - 1;
-                int area = h * w;
-                maxArea = max(maxArea, area);
+                int width = st.empty() ? i : i - st.top() - 1;
+                int area = height * width;
+                maxA = max(maxA, area);
             }
             st.push(i);
         }
-        return maxArea;
+
+        return maxA;
+    }
+};
+
+//method-2 (more intuitive)
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
+        stack<int> st;
+        int maxA = 0;
+        vector<int> ls(n), rs(n);
+
+        for (int i=0; i<n; i++) {
+            while (!st.empty() && heights[st.top()] >= heights[i]) st.pop();
+            if (st.empty()) ls[i] = 0;
+            else ls[i] = st.top()+1;
+            st.push(i);
+        }
+
+        while (!st.empty()) st.pop();
+
+        for (int i=n-1; i>=0; i--) {
+            while (!st.empty() && heights[st.top()] >= heights[i]) st.pop();
+            if (st.empty()) rs[i] = n-1;
+            else rs[i] = st.top()-1;
+            st.push(i);
+        }
+
+        for (int i=0; i<n; i++) {
+            int h = heights[i];
+            int w = rs[i] - ls[i] + 1;
+            int area = h * w;
+            maxA = max(maxA, area);
+        }
+
+        return maxA;
     }
 };

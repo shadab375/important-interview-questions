@@ -1,49 +1,49 @@
-
-struct Node{
-Node* childs[26];
-bool isEnd = false;
+struct Node {
+    Node* childs[26];
+    bool isEnd = false;
 };
 
 class Trie {
-public: Node* root;
+private:
+    Node* root;
+public:
     Trie() {
         root = new Node();
     }
     
     void insert(string word) {
-        Node* curr = root;
-        for (int i=0; i<word.length(); i++){
+        Node* cur = root;
+
+        for (int i=0; i<word.size(); i++) {
             char ch = word[i];
-            if (curr -> childs[ch-'a'] == nullptr){
-                curr -> childs[ch-'a'] = new Node();
-            }
-            curr = curr -> childs[ch-'a'];
+            if (cur->childs[ch-'a'] == NULL) cur->childs[ch-'a'] = new Node();
+            cur = cur->childs[ch-'a'];
         }
-        curr -> isEnd = true;
-        
+
+        cur->isEnd = true;
     }
     
     bool search(string word) {
-        Node* curr = root;
-        for (int i=0; i<word.length(); i++){
+        Node* cur = root;
+
+        for (int i=0; i<word.size(); i++) {
             char ch = word[i];
-            if (curr -> childs[ch-'a'] == nullptr){
-                return false;
-            }
-            curr = curr -> childs[ch-'a'];
+            if (cur->childs[ch-'a'] == NULL) return false;
+            cur = cur->childs[ch-'a'];
         }
-        return curr -> isEnd;
+
+        return cur->isEnd;
     }
     
     bool startsWith(string prefix) {
-        Node* curr = root;
-        for (int i=0; i<prefix.length(); i++){
+        Node* cur = root;
+
+        for (int i=0; i<prefix.size(); i++) {
             char ch = prefix[i];
-            if (curr -> childs[ch-'a'] == nullptr){
-                return false;
-            }
-            curr = curr -> childs[ch-'a'];
+            if (cur->childs[ch-'a'] == NULL) return false;
+            cur = cur->childs[ch-'a'];
         }
+
         return true;
     }
 };

@@ -12,18 +12,17 @@ public:
         int n = grid.size();
         int m = grid[0].size();
 
-        if (n == 0 || m == 0 || grid[0][0] != 0) return -1;
+        if (n==0 || m==0 || grid[0][0] != 0) return -1;
 
         auto isSafe = [&](int x, int y) {
             return x>=0 && x<n && y>=0 && y<m;
         };
 
-        vector<vector<int>> dist(n, vector<int>(m, 1e9));
         priority_queue<P, vector<P>, greater<P>> pq;
+        vector<vector<int>> dist(n, vector<int>(m, 1e9));
 
-        dist[0][0] = 0; 
-        pq.push({0, {0, 0}});
-        
+        dist[0][0] = 1;
+        pq.push({1, {0, 0}});
 
         while (!pq.empty()) {
             int nodeDist = pq.top().first;
@@ -34,18 +33,17 @@ public:
             for (auto &dir: directions) {
                 int new_x = x + dir[0];
                 int new_y = y + dir[1];
-                int edgeWeight = 1;
 
                 if (isSafe(new_x, new_y) && grid[new_x][new_y] == 0) {
-                    if (nodeDist + edgeWeight < dist[new_x][new_y]) {
-                        dist[new_x][new_y] = nodeDist + edgeWeight;
-                        pq.push({nodeDist+edgeWeight, {new_x, new_y}});
+                    if (nodeDist + 1 < dist[new_x][new_y]) {
+                        dist[new_x][new_y]= 1 + nodeDist;
+                        pq.push({dist[new_x][new_y], {new_x, new_y}});
                     }
                 }
             }
         }
 
         if (dist[n-1][m-1] == 1e9) return -1;
-        return dist[n-1][m-1] + 1;
+        return dist[n-1][m-1];
     }
 };

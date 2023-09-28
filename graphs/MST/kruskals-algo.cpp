@@ -50,7 +50,6 @@ class Solution
 	    return sum;
 	}
 	
-	
 	//Function to find sum of weights of edges of the Minimum Spanning Tree.
     int spanningTree(int V, vector<vector<int>> adj[])
     {
@@ -71,6 +70,8 @@ class Solution
         auto comparator = [&](auto& vec1, auto& vec2) {
             return vec1[2] < vec2[2];
         };
+
+
         
         sort(vec.begin(), vec.end(), comparator);
         
