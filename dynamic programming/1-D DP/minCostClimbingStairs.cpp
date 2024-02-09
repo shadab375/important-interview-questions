@@ -19,12 +19,11 @@ class Solution {
 public:
     int minCostClimbingStairs(vector<int>& cost) {
         int n = cost.size();
-
-        vector<int> dp(n+1, -1);
+        vector<int> dp(n, -1);
         dp[0] = cost[0];
         dp[1] = cost[1];
 
-        for (int i=2; i<n; i++){
+        for (int i=2; i<n; i++) {
             dp[i] = cost[i] + min(dp[i-1], dp[i-2]);
         }
 
@@ -34,24 +33,19 @@ public:
 
 class Solution {
 public:
+    int f(int i, int n, vector<int>& cost, vector<int>& dp) {
+        if (i >= n) return 0;
+        if (dp[i] != -1) return dp[i];
 
-    int solve(int ind, vector<int>& cost, vector<int>& dp){
-        //base case
-        if (ind == 0) return cost[0];
-        if (ind == 1) return cost[1];
+        int one_step = cost[i] + f(i+1, n, cost,dp);
+        int two_step = cost[i] + f(i+2, n, cost, dp);
 
-        if (dp[ind] != -1) return dp[ind];
-
-        int ans = cost[ind] + min(solve(ind-1, cost, dp), solve(ind-2, cost, dp));
-        return dp[ind] = ans;
+        return dp[i] = min(one_step, two_step);
     }
-
-
 
     int minCostClimbingStairs(vector<int>& cost) {
         int n = cost.size();
-        vector<int> dp(n+1, -1);
-        int ans = min(solve(n-1, cost, dp), solve(n-2, cost, dp));
-        return ans;
+        vector<int> dp(n, -1);
+        return min(f(0, n, cost, dp), f(1, n, cost, dp));
     }
 };

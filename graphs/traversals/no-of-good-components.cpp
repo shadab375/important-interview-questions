@@ -6,34 +6,34 @@ using namespace std;
 
 
 // } Driver Code Ends
-// User function Template for C++
+// Back-end complete function Template for C++
 
 class Solution {
-public:
-    void dfs(int u, vector<vector<int>>& adj, vector<int>& visited, int& n, int &e) {
+  public:
+    // DFS function to traverse the graph
+    void dfs(int u, int &vertices, int &edges, vector<vector<int>> &adj, vector<int> &visited) {
         visited[u] = 1;
-        n++;
-        e += adj[u].size();
-        for (int &v: adj[u]) {
+        vertices++;
+        edges += adj[u].size(); 
+        for (int &v : adj[u]) {
             if (!visited[v]) {
-                dfs(v, adj, visited, n, e);
-            } 
-        }
-    }     
- 
-    int findNumberOfGoodComponent(int V, vector<vector<int>>& adj) {
-        int ans = 0;
-        vector<int> visited(V+1, 0);
-        
-        for (int i=1; i<=V; i++) {
-            if (!visited[i]) {
-                int n = 0, e = 0;
-                dfs(i, adj, visited, n, e);
-                e = e / 2;
-                if (e == n * (n - 1) / 2) ans++;
+                dfs(v, vertices, edges, adj, visited);
             }
         }
-        
+    }
+    
+    int findNumberOfGoodComponent(int V, vector<vector<int>>& adj) {
+        int ans = 0;
+        vector<int> visited(V + 1, 0);
+
+        for (int i = 1; i <= V; i++) {
+            if (!visited[i]) {
+                int vertices = 0, edges = 0;
+                dfs(i, vertices, edges, adj, visited);
+                edges /= 2;
+                if (edges == (vertices * (vertices - 1)) / 2) ans++;
+            }
+        }
         return ans;
     }
 };

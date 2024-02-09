@@ -1,7 +1,3 @@
-/*
-*topo sort is linear ordering of vertices such that if there's a directed edge between u and v, then u
-*appears before v in that ordering.
-*/
 //{ Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
@@ -9,39 +5,38 @@ using namespace std;
 // } Driver Code Ends
 class Solution
 {
-	public:
-	
-	void dfs(int u, vector<int> adj[], vector<int>& vis, stack<int>& st) {
-	    vis[u] = 1;
-	    for (auto &v: adj[u]) {
-	        if (!vis[v]) {
-	            vis[v] = 1;
-	            dfs(v, adj, vis, st);
-	        }
-	    } 
-	    st.push(u);
-	}
+public:
+    void dfs(int u, vector<int> adj[], vector<int>& visited, stack<int>& st) {
+        visited[u] = 1;
+        
+        for (int &v: adj[u]) {
+            if (!visited[v]) {
+                dfs(v, adj, visited, st);
+            }
+        }
+        
+        st.push(u);
+    }	
 	
 	//Function to return list containing vertices in Topological order. 
 	vector<int> topoSort(int V, vector<int> adj[]) 
 	{
-	    vector<int> ans;
-	    vector<int> vis(V, 0);
+	    vector<int> visited(V, 0);
 	    stack<int> st;
 	    
 	    for (int i=0; i<V; i++) {
-	        if (!vis[i]) {
-	            dfs(i, adj, vis, st);
+	        if (!visited[i]) {
+	            dfs(i, adj, visited, st);
 	        }
 	    }
 	    
+	    vector<int> result;
 	    while (!st.empty()) {
-	        int node = st.top();
+	        result.push_back(st.top());
 	        st.pop();
-	        ans.push_back(node);
 	    }
 	    
-	    return ans;
+	    return result;
 	}
 };
 

@@ -11,7 +11,7 @@ public:
             dist[it[1]][it[0]] = it[2]; 
         }
 
-        for (int i = 0; i < n; i++) dist[i][i] = 0; // Renamed dist to dist
+        for (int i = 0; i < n; i++) dist[i][i] = 0;
 
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {

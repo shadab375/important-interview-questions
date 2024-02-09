@@ -11,14 +11,18 @@
  */
 class Solution {
 public:
-    bool isSym(TreeNode* left, TreeNode* right) {
-        if (left == NULL || right == NULL) return left == right;
+    TreeNode* build(vector<int>& A, int& i, int ub) {
+        if (i == A.size() || A[i] > ub) return NULL;
 
-        return (left->val == right->val) && isSym(left->left, right->right) && isSym(left->right, right->left);
+        TreeNode* root = new TreeNode(A[i++]);
+        root->left = build(A, i, root->val);
+        root->right = build(A, i, ub);
+
+        return root;
     }
 
-    bool isSymmetric(TreeNode* root) {
-        if (root == NULL) return true;
-        return isSym(root->left, root->right);
+    TreeNode* bstFromPreorder(vector<int>& A) {
+        int i = 0;
+        return build(A, i, INT_MAX);
     }
 };

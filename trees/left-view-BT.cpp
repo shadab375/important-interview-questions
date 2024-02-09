@@ -17,7 +17,7 @@ public:
         if (level == ans.size()) ans.push_back(node->val);
 
         solve(node->left, ans, level+1);
-        solve(node->ans, ans, level+1);
+        solve(node->right, ans, level+1);
     }
 
     vector<int> rightSideView(TreeNode* root) {

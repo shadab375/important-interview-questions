@@ -16,24 +16,26 @@ public:
         if (root == NULL) return ans;
         queue<TreeNode*> q;
         q.push(root);
-        bool leftToRight = true;
+        bool flag = true; // if flag == true, then move from left to right, else from right to left
 
         while (!q.empty()) {
             int size = q.size();
             vector<int> level(size);
+
             for (int i=0; i<size; i++) {
                 TreeNode* node = q.front();
                 q.pop();
-                
-                int index = (leftToRight) ? i : (size-1-i);
+                int index = (flag) ? i : (size-1-i);
                 level[index] = node->val;
 
-                if (node->left != NULL) q.push(node->left);
-                if (node->right != NULL) q.push(node->right);
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
             }
-            leftToRight = !leftToRight;
+
+            flag = !flag;
             ans.push_back(level);
         }
+
         return ans;
     }
 };

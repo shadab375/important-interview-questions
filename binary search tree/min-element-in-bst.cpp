@@ -1,19 +1,14 @@
 //{ Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
-#define MAX_HEIGHT 100000
 
-// Tree Node
-struct Node
-{
+struct Node {
     int data;
-    Node* left;
-    Node* right;
+    struct Node* left;
+    struct Node* right;
 };
-
 // Utility function to create a new Tree Node
-Node* newNode(int val)
-{
+Node* newNode(int val) {
     Node* temp = new Node;
     temp->data = val;
     temp->left = NULL;
@@ -21,24 +16,17 @@ Node* newNode(int val)
 
     return temp;
 }
-
-
-vector <int> bottomView(Node *root);
-
 // Function to Build Tree
-Node* buildTree(string str)
-{
+Node* buildTree(string str) {
     // Corner Case
-    if(str.length() == 0 || str[0] == 'N')
-        return NULL;
+    if (str.length() == 0 || str[0] == 'N') return NULL;
 
     // Creating vector of strings from input
     // string after spliting by space
     vector<string> ip;
 
     istringstream iss(str);
-    for(string str; iss >> str; )
-        ip.push_back(str);
+    for (string str; iss >> str;) ip.push_back(str);
 
     // Create the root of the tree
     Node* root = newNode(stoi(ip[0]));
@@ -49,7 +37,7 @@ Node* buildTree(string str)
 
     // Starting from the second element
     int i = 1;
-    while(!queue.empty() && i < ip.size()) {
+    while (!queue.empty() && i < ip.size()) {
 
         // Get and remove the front of the queue
         Node* currNode = queue.front();
@@ -59,7 +47,7 @@ Node* buildTree(string str)
         string currVal = ip[i];
 
         // If the left child is not null
-        if(currVal != "N") {
+        if (currVal != "N") {
 
             // Create the left child for the current node
             currNode->left = newNode(stoi(currVal));
@@ -70,12 +58,11 @@ Node* buildTree(string str)
 
         // For the right child
         i++;
-        if(i >= ip.size())
-            break;
+        if (i >= ip.size()) break;
         currVal = ip[i];
 
         // If the right child is not null
-        if(currVal != "N") {
+        if (currVal != "N") {
 
             // Create the right child for the current node
             currNode->right = newNode(stoi(currVal));
@@ -89,58 +76,51 @@ Node* buildTree(string str)
     return root;
 }
 
-
-// } Driver Code Ends
-//Function to return a list containing the bottom view of the given tree.
-
-class Solution {
-  public:
-    vector <int> bottomView(Node *root) {
-        vector<int> ans;
-        if (root == NULL) return ans;
-        
-        map<int, int> mp;
-        queue<pair<Node*, int>> q;
-        q.push({root, 0});
-        
-        while (!q.empty()) {
-            Node* node = q.front().first;
-            int line = q.front().second;
-            q.pop();
-            mp[line] = node->data;
-            
-            if (node->left) q.push({node->left, line-1});
-            if (node->right) q.push({node->right, line+1});
-        }
-        
-        for (auto it: mp) {
-            ans.push_back(it.second);
-        }
-        
-        return ans;
-    }
-};
-
-//{ Driver Code Starts.
+int minValue(Node* root);
 
 int main() {
+
     int t;
-    string tc;
-    getline(cin, tc);
-    t=stoi(tc);
-    while(t--)
-    {
-        string s ,ch;
+    scanf("%d ", &t);
+    while (t--) {
+        string s;
         getline(cin, s);
         Node* root = buildTree(s);
-        Solution ob;
-        vector <int> res = ob.bottomView(root);
-        for (int i : res) cout << i << " ";
-        cout << endl;
+        cout << minValue(root) << endl;
     }
-    return 0;
+    return 1;
 }
-
-
-
 // } Driver Code Ends
+
+
+// Function to find the minimum element in the given BST.
+
+/*
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+// Utility function to create a new Tree Node
+Node* newNode(int val) {
+    Node* temp = new Node;
+    temp->data = val;
+    temp->left = NULL;
+    temp->right = NULL;
+
+    return temp;
+}
+*/
+int minValue(Node* root) {
+    if (root == NULL) return -1;
+    
+    int ans = root->data;
+    
+    while (root->left != NULL) {
+        root = root->left;
+    }
+    
+    ans = root->data;
+    
+    return ans;
+}

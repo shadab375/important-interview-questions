@@ -11,14 +11,14 @@
  */
 class Solution {
 public:
-    bool isSym(TreeNode* left, TreeNode* right) {
-        if (left == NULL || right == NULL) return left == right;
 
-        return (left->val == right->val) && isSym(left->left, right->right) && isSym(left->right, right->left);
-    }
+    int minDepth(TreeNode* root) {
+        if (root == NULL) return 0;
+        if (root->left == NULL && root->right == NULL) return 1;
 
-    bool isSymmetric(TreeNode* root) {
-        if (root == NULL) return true;
-        return isSym(root->left, root->right);
+        int lh = (root->left != NULL) ? minDepth(root->left) : INT_MAX;
+        int rh = (root->right != NULL) ? minDepth(root->right) : INT_MAX;
+
+        return 1 + min(lh, rh);
     }
 };
