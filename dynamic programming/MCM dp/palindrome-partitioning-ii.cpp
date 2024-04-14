@@ -5,7 +5,6 @@ using namespace std;
 
 class Solution {
 public:
-
     bool isPalindrome(int i, int j, string& s) {
         while (i < j) {
             if (s[i] != s[j]) return false;
@@ -26,6 +25,7 @@ public:
                 mini = min(mini, cost);
             }     
         }
+        
         return dp[i] = mini;
     }
 
@@ -41,7 +41,6 @@ public:
 
 class Solution {
 public:
-
     bool isPalindrome(int i, int j, string& s) {
         while (i < j) {
             if (s[i] != s[j]) return false;

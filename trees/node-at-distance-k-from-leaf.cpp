@@ -23,6 +23,7 @@ Node* newNode(int val)
 }
 
 
+
 // Function to Build Tree
 Node* buildTree(string str)
 {
@@ -88,75 +89,53 @@ Node* buildTree(string str)
 }
 
 
-
-
-
-
-
-
-
 // } Driver Code Ends
-/* A binary tree Node
-struct Node
+//Node Structure
+/*struct NodeGiven a binary tree with n nodes and a non-negative integer k, the task is to count the number of special nodes. A node is considered special if there exists at least one leaf in its subtree such that the distance between the node and leaf is exactly k.
 {
-    int data;
-    Node* left, * right;
-}; */
+	int data;
+	Node *left, *right;
+};*/
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> ans;
-
-    bool isLeaf(Node* root) {
-        return root->left == NULL && root->right == NULL;
-    }
+    vector<vector<Node*>> paths;
     
-    void addLeftBoundary(Node* root) {
-        Node* cur = root->left;
-        while (cur) {
-            if (!isLeaf(cur)) ans.push_back(cur->data);
-            if (cur->left) cur = cur->left;
-            else cur = cur->right;
-        }
-    }
-    
-    void addRightBoundary(Node* root) {
-        vector<int> temp;
-        
-        Node* cur = root->right;
-        while (cur) {
-            if (!isLeaf(cur)) temp.push_back(cur->data);
-            if (cur->right) cur = cur->right;
-            else cur = cur->left;
-        }
-        
-        for (int i = temp.size() - 1; i >= 0; i--) {
-            ans.push_back(temp[i]);
-        }
-    }
-    
-    void addLeaves(Node* root) {
+    void solve(Node* root, vector<Node*>& temp) {
         if (root == NULL) return;
         
-        addLeaves(root->left);
-        if (isLeaf(root)) ans.push_back(root->data);
-        addLeaves(root->right);
+        temp.push_back(root);
+        
+        if (root->left == NULL && root->right == NULL) {
+            paths.push_back(temp);
+        }
+        solve(root->left, temp);
+        solve(root->right, temp);
+        
+        temp.pop_back();
     }
 
-    vector <int> boundary(Node *root) {
-        if (!isLeaf(root)) ans.push_back(root->data);
+    //Function to return count of nodes at a given distance from leaf nodes.
+    int printKDistantfromLeaf(Node* root, int k) {
+        unordered_set<Node*> result;
+        vector<Node*> temp;
+        solve(root, temp);
         
-        addLeftBoundary(root);
-        addLeaves(root);
-        addRightBoundary(root);
+        for (vector<Node*> &path: paths) {
+            int n = path.size();
+            if (n > k) {
+                result.insert(path[n-k-1]);
+            }
+        }
         
-        return ans;
+        return result.size();
     }
 };
 
-//{ Driver Code Starts.
 
-/* Driver program to test size function*/
+
+//{ Driver Code Starts.
 
 int main() {
     int t;
@@ -165,14 +144,16 @@ int main() {
     t=stoi(tc);
     while(t--)
     {
-        string s ,ch;
+        string s, ks;
         getline(cin, s);
         Node* root = buildTree(s);
-        Solution ob;
-        vector <int> res = ob.boundary(root);
-        for (int i : res) cout << i << " ";
-        cout << endl;
+        getline(cin, ks);
+        int k=stoi(ks);
+        Solution obj;
+        cout<<obj.printKDistantfromLeaf(root, k)<<endl;
     }
     return 0;
 }
+
+
 // } Driver Code Ends

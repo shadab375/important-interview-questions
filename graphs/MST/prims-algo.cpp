@@ -11,7 +11,7 @@ class Solution
     int spanningTree(int V, vector<vector<int>> adj[])
     {
         priority_queue<P, vector<P>, greater<P>> pq;
-        vector<int> inMST(V, 0);
+        vector<int> visited(V, 0);
         
         pq.push({0, 0});
         int sum = 0;
@@ -20,14 +20,14 @@ class Solution
             int node = pq.top().second;
             int wt = pq.top().first;
             pq.pop();
-            if (inMST[node]) continue;
-            inMST[node] = true;
+            if (visited[node]) continue;
+            visited[node] = true;
             sum += wt;
             
             for (auto &it: adj[node]) {
                 int adjNode = it[0];
                 int edgeWeight = it[1];
-                if (!inMST[adjNode]) {
+                if (!visited[adjNode]) {
                     pq.push({edgeWeight, adjNode});
                 }
             }

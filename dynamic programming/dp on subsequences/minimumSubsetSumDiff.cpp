@@ -29,19 +29,19 @@ int minSubsetSumDifference(vector < int > & arr, int n) {
   for (int i = 0; i < n; i++) {
     totSum += arr[i];
   }
-  int k = totSum;
 
-  vector<vector<int>> dp(n, vector<int>(k+1, -1));
+  vector<vector<int>> dp(n, vector<int>(totSum+1, -1));
 
-  for (int i = 0; i <= k; i++) {
+  for (int i = 0; i <= totSum; i++) {
     bool dummy = f(n - 1, i, arr, dp);
   }
 
   int mini = 1e9;
-  for (int i = 0; i <= k; i++) {
+  for (int i = 0; i <= totSum/2; i++) {
     if (dp[n - 1][i] == true) {
-      int diff = abs(i - (k - i));
-      mini = min(mini, diff);
+      int s1 = i;
+			int s2 = totSum - i;
+			mini = min(mini, abs(s1 - s2));
     }
   }
   return mini;
@@ -50,6 +50,9 @@ int minSubsetSumDifference(vector < int > & arr, int n) {
 
 //tabulation
 #include <bits/stdc++.h> 
+using namespace std;
+
+#include <bits/stdc++.h>
 using namespace std;
 
 int minSubsetSumDifference(vector<int>& arr, int n)
@@ -72,10 +75,11 @@ int minSubsetSumDifference(vector<int>& arr, int n)
 	}
 
 	int mini = 1e9;
-	for (int s1=0; s1<=totSum/2; s1++){
-		if (dp[n-1][s1] == true){
+	for (int i=0; i<=totSum/2; i++){
+		if (dp[n-1][i] == true){
+			int s1 = i;
 			int s2 = totSum - s1;
-			mini = min(mini, abs(s2 - s1));
+			mini = min(mini, abs(s1 - s2));
 		}
 	}
 	return mini;

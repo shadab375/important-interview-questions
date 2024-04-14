@@ -11,29 +11,27 @@
  */
 class Solution {
 public:
+    TreeNode* solve(vector<int>& inorder, vector<int>& postorder, int inStart, int inEnd, int postStart, int postEnd) {
+        if (inStart > inEnd || postStart > postEnd) return NUL;
 
-    TreeNode* build(vector<int>& inorder, vector<int>& postorder, int inStart, int inEnd, int postStart, int postEnd, map<int, int>& inMap) {
-        if (inStart>inEnd || postStart>postEnd) return NULL;
+        int rootVal = postorder[postEnd];
+        int i = inStart;
+        for (; i <= inEnd; i++) {
+            if (inorder[i] == rootVal) break;
+        }
 
-        TreeNode* root = new TreeNode(postorder[postEnd]);
-        int i = inMap[root->val];
-        int leftSize = i-inStart;
+        int leftSize = i - inStart;
+        int rightSize = inEnd - i;
 
-        root->left = build(inorder, postorder, inStart, i-1, postStart, postStart+leftSize-1, inMap);
-        root->right = build(inorder, postorder, i+1, inEnd, postStart+leftSize, postEnd-1, inMap);
+        TreeNode* root = new TreeNode(rootVal);
+        root->left = solve(inorder, postorder, inStart, i - 1, postStart, postStart + leftSize - 1);
+        root->right = solve(inorder, postorder, i + 1, inEnd, postEnd - rightSize, postEnd - 1);
 
         return root;
     }
 
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
         int n = inorder.size();
-        int inStart = 0, inEnd = n-1;
-        int postStart = 0, postEnd = n-1;
-
-        map<int, int> inMap;
-        for (int i=0; i<n; i++) inMap[inorder[i]] = i;
-        
-        TreeNode* root = build(inorder, postorder, inStart, inEnd, postStart, postEnd, inMap);
-        return root;
+        return solve(inorder, postorder, 0, n - 1, 0, n - 1);
     }
 };
